@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class shipment extends Model
+abstract class shipment extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
     public function getIsInBoundShipmentAttribute(){
-        if ($this->is_in_bound_shipment == 1){
+        if ($this->attributes['is_in_bound_shipment'] == 1){
             return true;
         }
             return false;

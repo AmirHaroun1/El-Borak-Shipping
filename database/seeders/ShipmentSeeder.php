@@ -17,7 +17,7 @@ class ShipmentSeeder extends Seeder
     {
         customer::chunk(100,function ($customers){
             foreach ($customers as $customer){
-                $customer->shipments()->saveMany(shipment::factory()->count(30)->make());
+                shipment::factory()->state(['customer_id'=>$customer->user_id])->count(30)->create();
             }
         });
     }
