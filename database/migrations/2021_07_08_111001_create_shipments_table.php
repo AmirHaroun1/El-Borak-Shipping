@@ -14,6 +14,7 @@ class CreateShipmentsTable extends Migration
     public function up()
     {
         Schema::create('shipments', function (Blueprint $table) {
+
             $table->id();
             $table->string('status');
             $table->boolean('is_in_bound_shipment')->default(0);
@@ -22,8 +23,8 @@ class CreateShipmentsTable extends Migration
                 ->references('user_id')
                 ->on('customers')
                 ->onDelete('cascade');
-
             $table->timestamps();
+
         });
     }
 
