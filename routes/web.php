@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\customer;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return $users = customer::WithUserInfo()->paginate(100);
+    return view('welcome',compact('users'));
 });
 
 Auth::routes();
