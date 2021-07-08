@@ -11,6 +11,7 @@ class customer extends User
 
     protected $table='customers';
     protected $primaryKey = 'user_id';
+    protected $fillable = [];
     protected $hidden = [
         'user_id',
     ];
@@ -23,5 +24,8 @@ class customer extends User
             ->join('users','customers.user_id','=','users.id');
     }
 
+    public function items(){
+        return $this->hasMany(item::class,'customer_id');
+    }
 
 }
