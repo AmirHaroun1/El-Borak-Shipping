@@ -23,4 +23,7 @@ abstract class shipment extends Model
         }
         return $this->hasOne(out_bound_shipment::class,'shipment_id');
     }
+    public function documents(){
+        return $this->hasMany(document::class,'shipment_id');
+    }
 }
