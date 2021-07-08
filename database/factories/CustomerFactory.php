@@ -22,7 +22,10 @@ class CustomerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'business_description'=>$this->faker->paragraph(8),
+            'logo'=>null,
+            'address' => $this->faker->address,
+            'type' => $this->faker->randomElement(['Basic','Gold','Platinum'])
         ];
     }
 }
