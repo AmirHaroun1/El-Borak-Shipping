@@ -22,7 +22,10 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->randomElement(['Silver Necklace','Polo T-shirt','Vase','Shampoo','Bracelets','Mobile','Plastic']),
+            'sku'=> $this->faker->randomKey() . $this->faker->randomDigit(),
+            'description' => $this->faker->paragraph(1),
+            'grams' => $this->faker->numberBetween(4,10000),
         ];
     }
 }

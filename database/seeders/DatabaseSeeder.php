@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\customer;
+use App\Models\item;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +16,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+       customer::chunk(100,function ($customers){
+            foreach ($customers as $customer){
+                $customer->items()->saveMany(item::factory()->count(10)->make());
+            }
+        });
     }
 }

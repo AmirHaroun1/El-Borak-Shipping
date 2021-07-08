@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return $users = customer::WithUserInfo()->paginate(100);
+    $users = customer::WithUserInfo()->with('items')->paginate(10);
     return view('welcome',compact('users'));
 });
 

@@ -28,4 +28,5 @@ class customer extends User
         return $this->hasMany(item::class,'customer_id');
     }
 
+
 }
