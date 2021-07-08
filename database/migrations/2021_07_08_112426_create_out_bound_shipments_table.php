@@ -14,7 +14,11 @@ class CreateOutBoundShipmentsTable extends Migration
     public function up()
     {
         Schema::create('out_bound_shipments', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('shipment_id')->primary();
+            $table->foreign('shipment_id')
+                ->references('id')
+                ->on('shipments')
+                ->onDelete('cascade');
             $table->dateTime('leaving_date');
             $table->dateTime('delivery_arrival_date');
             $table->string('delivery_destination');

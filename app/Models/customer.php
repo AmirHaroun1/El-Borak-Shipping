@@ -27,6 +27,9 @@ class customer extends User
     public function items(){
         return $this->hasMany(item::class,'customer_id');
     }
+    public function shipments(){
+        return $this->hasMany(shipment::class,'customer_id');
+    }
 
 
 }

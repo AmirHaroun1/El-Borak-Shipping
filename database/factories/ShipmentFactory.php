@@ -22,7 +22,15 @@ class ShipmentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'status' => $this->faker->randomElement(['pending','at_warehouse','to_warehouse','to_destination','at_destination']),
+            'is_in_bound_shipment' => 1,
         ];
+    }
+    public function configure()
+    {
+        return $this->afterMaking(function (shipment $shipment) {
+
+        });
+
     }
 }

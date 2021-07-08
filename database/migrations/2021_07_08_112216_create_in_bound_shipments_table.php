@@ -14,7 +14,11 @@ class CreateInBoundShipmentsTable extends Migration
     public function up()
     {
         Schema::create('in_bound_shipments', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('shipment_id')->primary();
+            $table->foreign('shipment_id')
+                ->references('id')
+                ->on('shipments')
+                ->onDelete('cascade');
             $table->dateTime('arrival_date');
             $table->timestamps();
         });
