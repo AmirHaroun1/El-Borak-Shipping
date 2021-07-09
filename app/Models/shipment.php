@@ -15,7 +15,6 @@ abstract class shipment extends Model
             return true;
         }
             return false;
-
     }
     public function shipment_details(){
         if ($this->is_in_bound_shipment){
@@ -25,5 +24,8 @@ abstract class shipment extends Model
     }
     public function documents(){
         return $this->hasMany(document::class,'shipment_id');
+    }
+    public function items(){
+        return $this->belongsToMany(item::class, 'item_shipment', 'shipment_id', 'item_id');
     }
 }

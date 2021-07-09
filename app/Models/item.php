@@ -13,4 +13,7 @@ class item extends Model
     public function customer(){
         return $this->belongsTo(customer::class,'customer_id','user_id');
     }
+    public function shipments(){
+        return $this->belongsToMany(item::class, 'item_shipment', 'item_id', 'shipment_id');
+    }
 }
