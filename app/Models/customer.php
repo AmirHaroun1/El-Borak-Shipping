@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class customer extends User
 {
@@ -11,10 +13,16 @@ class customer extends User
 
     protected $table='customers';
     protected $primaryKey = 'user_id';
-    protected $fillable = [];
+    protected $fillable = [
+        'business description',
+        'logo',
+        'address',
+        'type'
+    ];
     protected $hidden = [
         'user_id',
     ];
+    protected $with = ['user_info'];
 
     public function user_info(){
         return $this->belongsTo(User::class,'user_id','id');
@@ -30,6 +38,26 @@ class customer extends User
     public function shipments(){
         return $this->hasMany(shipment::class,'customer_id');
     }
+    public function updateCustomerUserInfo(Request $request){
+            $this->user_info()->update(
+                $request->except($this->getFillable())
+            );
+            if ($request->file('logo')){
+               $request['logo'] =  $this->saveLogo($request);
+            }
+            $this->update(
+                $request->only($this->getFillable())
+            );
+            return $this;
+    }
+    public function saveLogo(Request $request){
 
+        if (!is_null($this->logo))
+            unlink('storage/CustomerLogo/'.$this->logo);
+        $path = $request->file('logo')->store('CustomerLogo');;
+
+
+        return $path;
+    }
 
 }

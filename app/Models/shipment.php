@@ -16,16 +16,10 @@ abstract class shipment extends Model
         }
             return false;
     }
-    public function shipment_details(){
-        if ($this->is_in_bound_shipment){
-            return $this->hasOne(in_bound_shipment::class,'shipment_id');
-        }
-        return $this->hasOne(out_bound_shipment::class,'shipment_id');
-    }
     public function documents(){
         return $this->hasMany(document::class,'shipment_id');
     }
     public function items(){
-        return $this->belongsToMany(item::class, 'item_shipment', 'shipment_id', 'item_id');
+        return $this->belongsToMany(item::class, 'item_shipment', 'shipment_id', 'item_id')->withPivot('quantity');
     }
 }

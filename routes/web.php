@@ -2,6 +2,7 @@
 
 use App\Models\customer;
 use App\Models\in_bound_shipment;
+use App\Models\out_bound_shipment;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    //$users = customer::WithUserInfo()->with('items')->paginate(10);
 
-    return $in = in_bound_shipment::WithShipmentInfo()->paginate(20);
-    return view('welcome',compact('in'));
+    $t = customer::findOrFail(2)->with('user_info');
+    return view('welcome',compact('t'));
 });
 
 Auth::routes();

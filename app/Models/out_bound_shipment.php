@@ -13,7 +13,7 @@ class out_bound_shipment extends shipment
         return $this->belongsTo(shipment::class,'shipment_id','id');
     }
     public static function scopeWithShipmentInfo() {
-        return customer::query()
-            ->join('shipments','shipments.id','=','out_bound_shipments.shipment_id');
+        return out_bound_shipment::query()
+            ->join('shipments','shipment_id','=','shipments.id');
     }
 }

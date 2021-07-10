@@ -13,8 +13,10 @@ class in_bound_shipment extends shipment
     public function shipment_info(){
         return $this->belongsTo(shipment::class,'shipment_id','id');
     }
+
     public static function scopeWithShipmentInfo() {
         return in_bound_shipment::query()
             ->join('shipments','shipment_id','=','shipments.id');
     }
+
 }
