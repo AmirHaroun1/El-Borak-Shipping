@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ApiControllers\AdminCustomerController;
+use App\Http\Controllers\ApiControllers\CustomerItemController;
+use App\Http\Controllers\scantum\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::name('api.')->group(function () {
+Route::name('api.')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('/admin/customers',AdminCustomerController::class);
+    Route::apiResource('/customer/items',CustomerItemController::class);
 });
+Route::post('/login',[AuthController::class,'login']);

@@ -12,6 +12,7 @@ class AdminCustomerController extends Controller
 {
     //
     public function index(){
+
         $customers = customer::paginate(20);
         return CustomerResource::collection($customers);
     }
@@ -21,7 +22,6 @@ class AdminCustomerController extends Controller
         return new CustomerResource($customer);
     }
     public function show(customer $customer){
-
         return new CustomerResource($customer);
     }
     public function update(UpdateCustomerInfo $request,customer $customer){
@@ -29,7 +29,8 @@ class AdminCustomerController extends Controller
         return new CustomerResource($customer);
     }
     public function destroy(customer $customer){
-        $customer->delete();
-        return response()->json('',200);
+
+        $customer->user_info()->delete();
+        return response()->json($customer,200);
     }
 }

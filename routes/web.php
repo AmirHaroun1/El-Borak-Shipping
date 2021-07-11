@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-    $t = customer::findOrFail(2)->with('user_info');
+    $t = customer::findOrFail(8)->with('user_info');
     return view('welcome',compact('t'));
 });
 
