@@ -4,6 +4,7 @@ use App\Models\customer;
 use App\Models\in_bound_shipment;
 use App\Models\out_bound_shipment;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-    $t = customer::findOrFail(8)->with('user_info');
-    return view('welcome',compact('t'));
+
+    return view('welcome',compact('InBoundShipments'));
 });
 
 Auth::routes();

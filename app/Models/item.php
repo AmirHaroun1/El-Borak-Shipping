@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class item extends Model
 {
     use HasFactory;
-    protected $fillable = [];
+    protected $guarded = [];
 
     public function customer(){
         return $this->belongsTo(customer::class,'customer_id','user_id');

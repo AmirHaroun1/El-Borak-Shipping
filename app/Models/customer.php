@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Mockery\Exception;
 
 class customer extends User
 {
@@ -14,7 +16,7 @@ class customer extends User
     protected $table='customers';
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'business description',
+        'business_description',
         'logo',
         'address',
         'type'
@@ -38,17 +40,44 @@ class customer extends User
     public function shipments(){
         return $this->hasMany(shipment::class,'customer_id');
     }
+    public static function createCustomerUser(Request $request){
+
+        DB::beginTransaction();
+        try{
+
+            $user = new User();
+            $user->fill($request->only($user->getFillable()));
+            $user->save();
+
+            $customer = $user->customer_info()->create($request->except($user->getFillable()));
+            $customer->user_info = $user;
+
+            DB::commit();
+            return $customer;
+
+        }catch (Exception $exception){
+            return null;
+            DB::rollBack();
+        }
+    }
     public function updateCustomerUserInfo(Request $request){
-            $this->user_info()->update(
-                $request->except($this->getFillable())
-            );
-            if ($request->file('logo')){
+        DB::beginTransaction();
+        try{
+           $this->user_info()->update(
+               $request->except($this->getFillable())
+           );
+           if ($request->file('logo')){
                $request['logo'] =  $this->saveLogo($request);
-            }
-            $this->update(
-                $request->only($this->getFillable())
-            );
-            return $this;
+           }
+           $this->update(
+               $request->only($this->getFillable())
+           );
+           DB::commit();
+           return $this;
+       }catch (Exception $exception){
+           return null;
+           DB::rollBack();
+       }
     }
     public function saveLogo(Request $request){
 

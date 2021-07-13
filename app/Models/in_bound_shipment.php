@@ -16,6 +16,7 @@ class in_bound_shipment extends shipment
 
     public static function scopeWithShipmentInfo() {
         return in_bound_shipment::query()
+            ->select('in_bound_shipments.*','shipments.*')
             ->join('shipments','shipment_id','=','shipments.id');
     }
 

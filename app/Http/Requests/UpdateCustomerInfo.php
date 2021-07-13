@@ -28,14 +28,13 @@ class UpdateCustomerInfo extends FormRequest
      */
     public function rules()
     {
-        $customer = User::firstOrFail('id',$this->route('customer'));
+        $customerID = $this->route('customer')->user_id;
 
         return [
-            'national_id' =>[Rule::unique('users')->ignore($customer),'max:10','min:10'],
+            'national_id' =>[Rule::unique('users')->ignore($customerID),'max:10','min:10'],
             'name' => [ 'string', 'max:255', 'min:3'],
-            'phone'=>[Rule::unique('users')->ignore($customer),'min:10','max:10'],
-            'email' => [Rule::unique('users'),'email'],
-
+            'phone'=>[Rule::unique('users')->ignore($customerID),'min:10','max:10'],
+            'email' => [Rule::unique('users')->ignore($customerID),'email'],
         ];
     }
     protected function failedValidation(Validator $validator)

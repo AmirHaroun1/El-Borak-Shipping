@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiControllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\itemResource;
+
 use App\Models\customer;
 use App\Models\item;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class CustomerItemController extends Controller
     public function store(Request $request)
     {
 
-        $item = Auth::user()->items()->create($request->all());
+        $item = customer::firstOrFail('user_id',Auth::id())->items()->create($request->all());
 
         return new itemResource($item);
     }
@@ -44,7 +45,6 @@ class CustomerItemController extends Controller
 
         return new itemResource($item);
     }
-
     public function destroy(item $item)
     {
         if ($item->customer_id != Auth::id()){
