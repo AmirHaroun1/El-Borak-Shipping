@@ -5,11 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class shipment extends Model
+class shipment extends Model
 {
     use HasFactory;
-
-    protected $guarded = [];
+    protected $table = 'shipments';
+    public $fillable = [
+        'status' ,
+        'is_in_bound_shipment',
+        'customer_id'
+    ];
     public function getIsInBoundShipmentAttribute(){
         if ($this->attributes['is_in_bound_shipment'] == 1){
             return true;
@@ -21,5 +25,8 @@ abstract class shipment extends Model
     }
     public function items(){
         return $this->belongsToMany(item::class, 'item_shipment', 'shipment_id', 'item_id')->withPivot('quantity');
+    }
+    public function in_bound_shipment(){
+        return $this->hasOne(in_bound_shipment::class,'shipment_id');
     }
 }

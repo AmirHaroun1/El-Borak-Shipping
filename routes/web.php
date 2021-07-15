@@ -20,7 +20,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-
+    $attrs = customer::firstOrFail()->getAttributes();
+    foreach ($attrs as $attr){
+        return $attr;
+    }
     return view('welcome',compact('InBoundShipments'));
 });
 

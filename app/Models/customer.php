@@ -24,8 +24,6 @@ class customer extends User
     protected $hidden = [
         'user_id',
     ];
-    protected $with = ['user_info'];
-
     public function user_info(){
         return $this->belongsTo(User::class,'user_id','id');
     }
@@ -33,7 +31,10 @@ class customer extends User
         return customer::query()
             ->join('users','customers.user_id','=','users.id');
     }
-
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->WithUserInfo()->findOrFail($value);
+    }
     public function items(){
         return $this->hasMany(item::class,'customer_id');
     }
@@ -41,23 +42,16 @@ class customer extends User
         return $this->hasMany(shipment::class,'customer_id');
     }
     public static function createCustomerUser(Request $request){
-
         DB::beginTransaction();
         try{
-
-            $user = new User();
-            $user->fill($request->only($user->getFillable()));
-            $user->save();
-
-            $customer = $user->customer_info()->create($request->except($user->getFillable()));
-            $customer->user_info = $user;
-
+            $UserAttrs = $request->only((new User)->getFillable());
+            $user = User::create($UserAttrs);
+            $user->customer_info()->create($request->except($UserAttrs));
             DB::commit();
-            return $customer;
-
+            return true;
         }catch (Exception $exception){
-            return null;
             DB::rollBack();
+            return false;
         }
     }
     public function updateCustomerUserInfo(Request $request){
@@ -73,19 +67,16 @@ class customer extends User
                $request->only($this->getFillable())
            );
            DB::commit();
-           return $this;
+           return true;
        }catch (Exception $exception){
-           return null;
-           DB::rollBack();
-       }
+            DB::rollBack();
+            return false;
+        }
     }
     public function saveLogo(Request $request){
-
         if (!is_null($this->logo))
             unlink('storage/CustomerLogo/'.$this->logo);
         $path = $request->file('logo')->store('CustomerLogo');;
-
-
         return $path;
     }
 

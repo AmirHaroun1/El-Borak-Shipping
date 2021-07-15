@@ -23,6 +23,5 @@ Route::name('api.')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('/admin/customers',AdminCustomerController::class);
     Route::apiResource('/customer/items',CustomerItemController::class);
     Route::apiResource('/customer/in-bound-shipments',CustomerINBoundShipmentController::class);
-
 });
 Route::post('/login',[AuthController::class,'login']);
