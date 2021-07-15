@@ -19,6 +19,8 @@ class CustomerFilter
             $customerQuery = self::nameQuery($customerQuery,$filter);
         if ($filter->phone)
             $customerQuery = self::phoneQuery($customerQuery,$filter);
+        if ($filter->type)
+            $customerQuery = self::TypeQuery($customerQuery,$filter);
         return $customerQuery;
     }
     public static function idQuery($query,$filter){
@@ -29,6 +31,9 @@ class CustomerFilter
     }
     public static function phoneQuery($query,$filter){
         return $query->where('users.phone',$filter->phone);
+    }
+    public static function TypeQuery($query,$filter){
+        return $query->where('customers.type',$filter->type);
     }
 
 

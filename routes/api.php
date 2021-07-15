@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiControllers\AdminCustomerController;
 use App\Http\Controllers\ApiControllers\CustomerInBoundShipmentController;
 use App\Http\Controllers\ApiControllers\CustomerItemController;
 use App\Http\Controllers\ApiControllers\CustomerOutBoundShipmentController;
+use App\Http\Controllers\ApiControllers\DashboardController;
 use App\Http\Controllers\ApiControllers\DocumentsController;
 use App\Http\Controllers\ApiControllers\ShipmentDocumentsController;
 use App\Http\Controllers\ApiControllers\ShipmentItemsController;
@@ -24,14 +25,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('api.')->middleware('auth:sanctum')->group(function () {
     Route::post('/login',[AuthController::class,'login']);
+    Route::get('/admin/dashboard',[DashboardController::class,'index']);
 
     Route::apiResource('/admin/customers',AdminCustomerController::class);
     Route::apiResource('/customer/items',CustomerItemController::class);
     Route::apiResource('/customer/in-bound-shipments',CustomerINBoundShipmentController::class);
     Route::apiResource('/customer/out-bound-shipments',CustomerOutBoundShipmentController::class);
+
+    Route::post('shipment/{shipment}/item/{item}',[ShipmentItemsController::class,'store'])->name('shipment.item.store');
     Route::apiResource('/shipment/{shipment}/item',ShipmentItemsController::class,['as'=>'shipment'])
-        ->except('index','show');
+        ->except('index','show','store');
+
     Route::get('/shipment/{shipment_id}/documents',[ShipmentDocumentsController::class,'index'])->name('shipment.documents');
-    Route::apiResource('/document',DocumentsController::class)->except('index');
+    Route::apiResource('/document',DocumentsController::class)
+        ->except('index');
 
 });

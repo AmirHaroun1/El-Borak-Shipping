@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
@@ -39,7 +40,7 @@ class in_bound_shipment extends shipment
             $shipment->in_bound_shipment()->create($request->only(['arrival_date']));
             DB::commit();
             return true;
-        }catch (Exception $exception){
+        }catch (QueryException $exception){
             DB::rollBack();
             return $exception;
         }
@@ -54,9 +55,9 @@ class in_bound_shipment extends shipment
             $this->update($request->only($this->getFillable()));
             DB::commit();
             return true;
-        }catch (Exception $exception){
+        }catch (QueryException $exception){
             DB::rollBack();
-            return false;
+            return $exception;
         }
     }
 }

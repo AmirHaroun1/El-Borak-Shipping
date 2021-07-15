@@ -7,6 +7,7 @@ use App\Http\Filters\InBoundShipmentFilter;
 use App\Http\Resources\inBoundShipmentResource;
 use App\Models\in_bound_shipment;
 use App\Models\shipment;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class CustomerInBoundShipmentController extends Controller
@@ -29,7 +30,7 @@ class CustomerInBoundShipmentController extends Controller
     }
     public function store(Request $request)
     {
-        if (!in_bound_shipment::StoreShipment($request)){
+        if (in_bound_shipment::StoreShipment($request) instanceof QueryException){
             return response('Error While Creating Shipment',400);
         }
         return response()->json('Shipment Created Successfully',200);
@@ -40,7 +41,7 @@ class CustomerInBoundShipmentController extends Controller
     }
     public function update(Request $request, in_bound_shipment $in_bound_shipment)
     {
-        if(!$in_bound_shipment->UpdateShipment($request)){
+        if($in_bound_shipment->UpdateShipment($request) instanceof QueryException){
             return response('Error While Updating Shipment',400);
         }
         return response()->json('Shipment Updated Successfully',200);

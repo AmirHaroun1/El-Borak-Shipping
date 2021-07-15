@@ -7,7 +7,9 @@ use App\Http\Filters\OutBoundShipmentFilter;
 use App\Http\Resources\outBoundShipmentResource;
 use App\Models\out_bound_shipment;
 use App\Models\shipment;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Mockery\Exception;
 
 class CustomerOutBoundShipmentController extends Controller
 {
@@ -29,8 +31,9 @@ class CustomerOutBoundShipmentController extends Controller
 
     public function store(Request $request)
     {
-        if (!out_bound_shipment::StoreShipment($request)){
-            return response('Error While Creating Shipment',400);
+
+        if (out_bound_shipment::StoreShipment($request) instanceof  QueryException){
+            return response("Error While Creating Shipment",403);
         }
         return response()->json('Shipment Created Successfully',200);
     }
@@ -39,10 +42,9 @@ class CustomerOutBoundShipmentController extends Controller
     {
         return new outBoundShipmentResource($out_bound_shipment);
     }
-
     public function update(Request $request, out_bound_shipment $out_bound_shipment)
     {
-        if(!$out_bound_shipment->UpdateShipment($request)){
+        if($out_bound_shipment->UpdateShipment($request) instanceof QueryException){
             return response('Error While Updating Shipment',400);
         }
         return response()->json('Shipment Updated Successfully',200);

@@ -30,7 +30,7 @@ class shipment extends Model
         return $this->hasOne(in_bound_shipment::class,'shipment_id');
     }
     public function out_bound_shipment(){
-        return $this->hasOne(in_bound_shipment::class,'shipment_id');
+        return $this->hasOne(out_bound_shipment::class,'shipment_id');
     }
 
 }
