@@ -3,8 +3,9 @@
 use App\Http\Controllers\ApiControllers\AdminCustomerController;
 use App\Http\Controllers\ApiControllers\CustomerInBoundShipmentController;
 use App\Http\Controllers\ApiControllers\CustomerItemController;
+use App\Http\Controllers\ApiControllers\CustomerOutBoundShipmentController;
+use App\Http\Controllers\ApiControllers\ShipmentItemsController;
 use App\Http\Controllers\scantum\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,5 +24,10 @@ Route::name('api.')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('/admin/customers',AdminCustomerController::class);
     Route::apiResource('/customer/items',CustomerItemController::class);
     Route::apiResource('/customer/in-bound-shipments',CustomerINBoundShipmentController::class);
+    Route::apiResource('/customer/out-bound-shipments',CustomerOutBoundShipmentController::class);
+    Route::apiResource('/shipment/{shipment}/item',ShipmentItemsController::class,['as'=>'shipment'])
+        ->except('index','show');
+
+
 });
 Route::post('/login',[AuthController::class,'login']);
