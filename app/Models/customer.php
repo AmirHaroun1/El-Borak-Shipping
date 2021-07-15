@@ -79,5 +79,4 @@ class customer extends User
         $path = $request->file('logo')->store('CustomerLogo');;
         return $path;
     }
-
 }
