@@ -23,12 +23,12 @@ class in_bound_shipment extends shipment
             ->select('in_bound_shipments.*','shipments.*')
             ->join('shipments','shipment_id','=','shipments.id');
     }
-    public function resolveRouteBinding($value, $field = 'shipment_id')
+    public function resolveRouteBinding($value, $field = null)
     {
         //return in_bound_shipment::firstOrFail();
         return $this->WithShipmentInfo()->where('shipment_id',$value)->firstOrFail();
     }
-    public static function StoreInBoundShipment(Request $request){
+    public static function StoreShipment(Request $request){
         DB::beginTransaction();
         try{
             $shipment = shipment::create([
@@ -44,7 +44,7 @@ class in_bound_shipment extends shipment
             return $exception;
         }
     }
-    public function UpdateInBoundShipment(Request $request){
+    public function UpdateShipment(Request $request){
         DB::beginTransaction();
         try {
             $this->shipment_info()->update([
